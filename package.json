@@ -1,0 +1,16 @@
+{
+  "name": "arkcase-json-patch",
+  "version": "0.0.1",
+  "description": "Performs JSON patch",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "ArkCase Team",
+  "license": "LGPLv3",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2"
+  }
+}
