@@ -24,4 +24,16 @@ describe('Apply method testing', () => {
         });
         done();
     });
+
+    it('should show error', (done) => {
+        let res = jsonPatch.apply({a: '1', b: '2'},
+            [{op: 'remove', path: '/c'}],
+            {
+                silent: true
+            }
+        ).err;
+        expect(res).to.equal('Location not found');
+        done();
+    });
+
 });

@@ -52,6 +52,7 @@ function run(doc, patch) {
  * @param  {Array}        patch               - JSON Patch array
  * @param  {Object}       options             - options
  * @param  {Boolean}      options.reversible  - return an array to revert
+ * @param  {Boolean}      options.silent      - Don't print into console if true
  * @return {PatchResult}
  */
 function apply(doc, patch, options) {
@@ -59,6 +60,9 @@ function apply(doc, patch, options) {
         throw new Error("Invalid argument, patch must be an array");
 
     var done = [];
+    var error = null;
+
+    var silent = (options && typeof options === "object" && options.silent === true);
 
     for (var i = 0, len = patch.length; i < len; i++) {
         var p = patch[i];
@@ -67,21 +71,21 @@ function apply(doc, patch, options) {
         try {
             r = run(doc, p);
         } catch (err) {
-            console.warn("Error applying patch: " + JSON.stringify(p) + "\n" + err);
+            error = err.message;
+            if (!silent) {
+                console.error("Error applying patch: " + JSON.stringify(p) + "\n" + err);
+            }
             continue;
-
-            // restore document
-            // does not use ./revert.js because it is a circular dependency
-            // const revertPatch = buildRevertPatch(done);
-            // apply(doc, revertPatch);
-            // throw err;
         }
 
         doc = r.doc;
         done.push([p, r.previous, r.idx]);
     }
 
-    var result = {doc: doc};
+    var result = {
+        doc: doc,
+        err: error
+    };
 
     if (options && typeof options === "object" && options.reversible === true)
         result.revert = done;
