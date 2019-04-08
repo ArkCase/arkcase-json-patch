@@ -1,6 +1,6 @@
 {
   "name": "arkcase-json-patch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Performs JSON patch",
   "main": "index.js",
   "scripts": {
